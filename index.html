@@ -3,744 +3,1060 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>三大持仓深度分析 | 腾讯·阿里·英伟达 2026</title>
+<title>持仓组合分析 | 腾讯·阿里·英伟达 2026</title>
 <style>
-:root{--bg:#0d1117;--bg2:#161b22;--bg3:#21262d;--border:#30363d;--text:#e6edf3;--text2:#8b949e;--accent:#ff6b35;--green:#3fb950;--red:#f85149;--yellow:#d29922;--blue:#58a6ff;}
+:root {
+  --bg:#0d1117; --bg2:#161b22; --bg3:#21262d; --bd:#30363d;
+  --txt:#e6edf3; --txt2:#8b949e;
+  --red:#f85149; --green:#3fb950; --yellow:#d29922; --blue:#58a6ff; --orange:#ff6b35; --purple:#bc8cff;
+}
 *{box-sizing:border-box;margin:0;padding:0;}
-body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--bg);color:var(--text);font-size:14px;line-height:1.6;}
-.container{max-width:1200px;margin:0 auto;padding:20px;}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;background:var(--bg);color:var(--txt);line-height:1.6;font-size:14px;}
+.container{max-width:1200px;margin:0 auto;padding:16px;}
 
 /* Header */
-.header{text-align:center;padding:40px 20px 30px;border-bottom:1px solid var(--border);margin-bottom:30px;}
-.header .badge{display:inline-block;background:var(--accent);color:#fff;padding:4px 16px;border-radius:20px;font-size:12px;font-weight:600;margin-bottom:12px;}
-.header h1{font-size:28px;margin-bottom:8px;}
-.header .sub{color:var(--text2);font-size:14px;}
-.header .date{color:var(--text2);font-size:12px;margin-top:8px;}
-.header .logos{display:flex;gap:12px;justify-content:center;margin-top:16px;flex-wrap:wrap;}
-.header .logo{background:var(--bg3);border:1px solid var(--border);padding:6px 16px;border-radius:20px;font-size:12px;color:var(--text2);}
+.header{text-align:center;padding:32px 16px;border-bottom:1px solid var(--bd);margin-bottom:24px;background:linear-gradient(135deg,#0d1117 0%,#161b22 100%);border-radius:12px;}
+.header h1{font-size:26px;color:var(--txt);margin-bottom:8px;}
+.header .sub{color:var(--txt2);font-size:13px;}
+.header .date-tag{display:inline-block;background:var(--bg3);border:1px solid var(--bd);padding:4px 14px;border-radius:14px;font-size:12px;color:var(--txt2);margin-top:12px;}
 
 /* Nav */
-.nav{position:sticky;top:0;background:var(--bg2);border-bottom:1px solid var(--border);z-index:100;padding:0 20px;overflow-x:auto;}
+.nav{position:sticky;top:0;background:var(--bg2);border-bottom:1px solid var(--bd);z-index:100;margin-bottom:24px;border-radius:8px;overflow-x:auto;}
 .nav ul{display:flex;list-style:none;gap:0;white-space:nowrap;}
-.nav li a{display:block;padding:12px 16px;color:var(--text2);text-decoration:none;font-size:13px;border-bottom:2px solid transparent;transition:all 0.2s;}
-.nav li a:hover,.nav li a.active{color:var(--text);border-bottom-color:var(--accent);}
+.nav li a{display:block;padding:12px 16px;color:var(--txt2);text-decoration:none;font-size:13px;border-bottom:2px solid transparent;transition:all .2s;}
+.nav li a:hover,.nav li a.active{color:var(--txt);border-bottom-color:var(--orange);}
 
-/* Section */
-.section{margin-bottom:60px;}
-.section-title{font-size:20px;color:var(--text);margin-bottom:20px;padding-bottom:10px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;}
-
-/* Cards */
-.card{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:20px;margin-bottom:16px;}
-.card-title{font-size:13px;color:var(--text2);margin-bottom:14px;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;}
-
-/* KPI */
-.kpi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-bottom:24px;}
-.kpi{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:16px;text-align:center;}
-.kpi .val{font-size:22px;font-weight:700;margin-bottom:4px;}
-.kpi .lbl{font-size:11px;color:var(--text2);text-transform:uppercase;letter-spacing:0.5px;}
-.kpi .sub{font-size:11px;color:var(--text2);margin-top:4px;}
+/* KPI row */
+.kpi-row{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:24px;}
+.kpi{background:var(--bg2);border:1px solid var(--bd);border-radius:10px;padding:16px 12px;text-align:center;}
+.kpi .val{font-size:20px;font-weight:700;margin-bottom:2px;}
+.kpi .lbl{font-size:11px;color:var(--txt2);text-transform:uppercase;letter-spacing:.5px;}
 .kpi.up .val{color:var(--green);}
 .kpi.down .val{color:var(--red);}
-.kpi.neutral .val{color:var(--blue);}
 
-/* Charts */
-.charts-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(440px,1fr));gap:16px;}
-.chart-card{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:16px;}
-.chart-title{font-size:13px;color:var(--text2);margin-bottom:12px;font-weight:600;}
-.chart{width:100%;background:#1c2128;border-radius:4px;}
-.chart-wide{grid-column:1/-1;}
+/* Section */
+.section{margin-bottom:40px;}
+.section-title{font-size:16px;color:var(--txt);margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid var(--bd);display:flex;align-items:center;gap:8px;}
 
-/* Verdict */
-.verdict{display:flex;align-items:center;gap:20px;padding:24px;background:linear-gradient(135deg,#1a2a1a,var(--bg2));border:1px solid var(--green);border-radius:8px;}
-.verdict-badge{background:var(--green);color:#fff;font-size:20px;font-weight:700;padding:10px 20px;border-radius:8px;flex-shrink:0;}
-.verdict-title{color:var(--green);font-size:16px;font-weight:700;margin-bottom:8px;}
-.verdict p{color:var(--text2);font-size:13px;line-height:1.7;}
+/* Cards */
+.card{background:var(--bg2);border:1px solid var(--bd);border-radius:10px;padding:18px;margin-bottom:14px;}
+.card-title{font-size:12px;color:var(--txt2);text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px;}
+.row-card{display:flex;gap:16px;margin-bottom:10px;flex-wrap:wrap;}
+.row-card .mini{background:var(--bg3);border:1px solid var(--bd);border-radius:8px;padding:12px;flex:1;min-width:140px;text-align:center;}
+.row-card .mini .val{font-size:18px;font-weight:700;}
+.row-card .mini .lbl{font-size:11px;color:var(--txt2);margin-top:2px;}
 
-/* Moat */
-.moat-list{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
-.moat-item{background:#1c2128;border-radius:8px;padding:14px;display:flex;align-items:flex-start;gap:12px;}
-.moat-icon{font-size:20px;flex-shrink:0;}
-.moat-content h4{font-size:14px;color:var(--text);margin-bottom:4px;}
-.moat-content p{font-size:12px;color:var(--text2);}
-.moat-strength{display:inline-block;padding:2px 8px;border-radius:10px;font-size:11px;font-weight:600;margin-left:6px;}
-.moat-strength.strong{background:rgba(63,185,80,0.15);color:var(--green);}
-.moat-strength.medium{background:rgba(210,153,34,0.15);color:var(--yellow);}
-.moat-strength.weak{background:rgba(248,81,73,0.15);color:var(--red);}
-
-/* Risk */
-.risk-list{display:flex;flex-direction:column;gap:8px;}
-.risk-item{display:flex;align-items:center;gap:12px;padding:8px 12px;background:#1c2128;border-radius:6px;}
-.risk-name{width:120px;font-size:13px;color:var(--text);flex-shrink:0;}
-.risk-bar{flex:1;height:8px;background:var(--bg3);border-radius:4px;overflow:hidden;}
-.risk-fill{height:100%;border-radius:4px;transition:width 0.6s;}
-.risk-pct{width:40px;text-align:right;font-size:12px;color:var(--text2);}
-
-/* Tables */
-.table-wrap{overflow-x:auto;}
-table{width:100%;border-collapse:collapse;font-size:13px;}
-th{background:var(--bg3);padding:10px 12px;text-align:left;border-bottom:1px solid var(--border);color:var(--text2);font-weight:600;}
-td{padding:10px 12px;border-bottom:1px solid var(--border);}
+/* Table */
+table{width:100%;border-collapse:collapse;font-size:13px;margin-top:8px;}
+th{background:var(--bg3);padding:9px 12px;text-align:left;border-bottom:1px solid var(--bd);color:var(--txt2);font-weight:600;}
+td{padding:9px 12px;border-bottom:1px solid #1c2128;text-align:right;}
+td:first-child,th:first-child{text-align:left;}
 tr:hover td{background:var(--bg3);}
 .up{color:var(--green);}
 .down{color:var(--red);}
 
+/* Charts */
+.charts-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:14px;margin-top:12px;}
+.chart-card{background:var(--bg2);border:1px solid var(--bd);border-radius:10px;padding:14px;}
+.chart-title{font-size:12px;color:var(--txt2);margin-bottom:10px;font-weight:600;}
+canvas{max-width:100%;display:block;margin:0 auto;}
+
+/* Tags */
+.tag{display:inline-block;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;margin:2px;}
+.tag-red{background:rgba(248,81,73,.15);color:var(--red);border:1px solid rgba(248,81,73,.3);}
+.tag-yellow{background:rgba(210,153,34,.15);color:var(--yellow);border:1px solid rgba(210,153,34,.3);}
+.tag-green{background:rgba(63,185,80,.15);color:var(--green);border:1px solid rgba(63,185,80,.3);}
+.tag-blue{background:rgba(88,166,255,.15);color:var(--blue);border:1px solid rgba(88,166,255,.3);}
+
+/* Summary table */
+.summary-table{width:100%;border-collapse:collapse;font-size:13px;}
+.summary-table th{background:var(--bg3);padding:10px 12px;text-align:center;border-bottom:1px solid var(--bd);color:var(--txt2);font-weight:600;}
+.summary-table td{padding:10px 12px;border-bottom:1px solid #1c2128;text-align:center;}
+.summary-table td:first-child{text-align:left;font-weight:600;color:var(--txt);}
+.summary-table .good{color:var(--green);font-weight:700;}
+.summary-table .bad{color:var(--red);}
+.summary-table .warn{color:var(--yellow);}
+
+/* Verdict */
+.verdict{background:linear-gradient(135deg,#1a2a1a,#162016);border:1px solid #238636;border-radius:12px;padding:20px;margin-top:14px;}
+.verdict h3{color:var(--green);font-size:16px;margin-bottom:8px;}
+.verdict p{color:var(--txt2);font-size:13px;line-height:1.7;}
+
+/* Moat items */
+.moat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;margin-top:10px;}
+.moat-item{background:var(--bg3);border-radius:8px;padding:12px;border-left:3px solid var(--green);}
+.moat-item .icon{font-size:16px;margin-bottom:4px;}
+.moat-item .label{font-size:12px;color:var(--txt);font-weight:600;}
+.moat-item .desc{font-size:11px;color:var(--txt2);margin-top:2px;}
+
+/* Risk bar */
+.risk-bar{height:8px;background:var(--bg);border-radius:4px;overflow:hidden;margin:4px 0;}
+.risk-fill{height:100%;border-radius:4px;}
+
+/* Rating stars */
+.stars{color:var(--yellow);font-size:14px;letter-spacing:1px;}
+
 /* Footer */
-.footer{text-align:center;padding:30px;color:var(--text2);font-size:12px;border-top:1px solid var(--border);margin-top:40px;}
-.footer span{margin:0 8px;}
+.footer{text-align:center;padding:24px;color:var(--txt2);font-size:12px;border-top:1px solid var(--bd);margin-top:40px;}
+
+@media(max-width:600px){
+  .kpi-row{grid-template-columns:repeat(3,1fr);gap:8px;}
+  .kpi .val{font-size:16px;}
+  .charts-grid{grid-template-columns:1fr;}
+  .nav li a{padding:10px 12px;font-size:12px;}
+  .summary-table{font-size:12px;}
+}
 </style>
 </head>
 <body>
 <div class="container">
-  <div class="header">
-    <div class="badge">三大持仓深度分析</div>
-    <h1>腾讯 · 阿里巴巴 · 英伟达</h1>
-    <div class="sub">巴菲特框架 · 14人团队 · 量化评分 · 手机可读</div>
-    <div class="date">数据截至 2026年4月15日 | 数据来源: NeoData / Yahoo Finance / 公开研报</div>
-    <div class="logos">
-      <span class="logo">🇨🇳 腾讯 0700.HK</span>
-      <span class="logo">🏆 阿里巴巴 BABA</span>
-      <span class="logo">📈 英伟达 NVDA</span>
-      <span class="logo">巴菲特量化框架</span>
-      <span class="logo">14人团队决策</span>
+
+<!-- HEADER -->
+<div class="header">
+  <h1>持仓组合分析报告</h1>
+  <div class="sub">腾讯 · 阿里巴巴 · 英伟达</div>
+  <div class="date-tag">📅 2026-04-15 · 数据来源: 新浪财经 / Futu / 36kr / Yahoo Finance</div>
+</div>
+
+<!-- NAV -->
+<div class="nav">
+  <ul>
+    <li><a href="#compare">📊 三标的对比</a></li>
+    <li><a href="#tencent">🦉 腾讯 0700.HK</a></li>
+    <li><a href="#alibaba">🏪 阿里 BABA</a></li>
+    <li><a href="#nvda">🚀 英伟达 NVDA</a></li>
+    <li><a href="#conclusion">👑 CIO 裁决</a></li>
+  </ul>
+</div>
+
+<!-- SECTION 0: COMPARE TABLE -->
+<div class="section" id="compare">
+  <div class="section-title">📊 三标的横向对比</div>
+  <div class="card">
+    <table class="summary-table">
+      <thead>
+        <tr>
+          <th>指标</th>
+          <th>腾讯 0700.HK</th>
+          <th>阿里 BABA</th>
+          <th>英伟达 NVDA</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>当前股价</td>
+          <td>499 HKD</td>
+          <td>$128.01</td>
+          <td>$199.53</td>
+        </tr>
+        <tr>
+          <td>总市值</td>
+          <td>¥4.55万亿</td>
+          <td>$3,062亿</td>
+          <td>$4.85万亿</td>
+        </tr>
+        <tr>
+          <td>营收 (FY)</td>
+          <td class="good">¥7,518亿</td>
+          <td>¥9,963亿</td>
+          <td>$265.9B (FY26)</td>
+        </tr>
+        <tr>
+          <td>净利润</td>
+          <td class="good">¥2,596亿</td>
+          <td>¥1,295亿</td>
+          <td>$79.8B (FY26)</td>
+        </tr>
+        <tr>
+          <td>净利润增速</td>
+          <td class="good">+17%</td>
+          <td class="warn">-10% (FY25)</td>
+          <td class="good">+94%</td>
+        </tr>
+        <tr>
+          <td>净利率</td>
+          <td class="good">34.5%</td>
+          <td>13%</td>
+          <td class="good">30%</td>
+        </tr>
+        <tr>
+          <td>毛利率</td>
+          <td>~56%</td>
+          <td>~38%</td>
+          <td class="good">73%</td>
+        </tr>
+        <tr>
+          <td>ROE</td>
+          <td class="good">~30%</td>
+          <td class="warn">~15%</td>
+          <td class="good">101.5%</td>
+        </tr>
+        <tr>
+          <td>PE (TTM)</td>
+          <td class="good">18x</td>
+          <td class="warn">23x</td>
+          <td class="warn">40x</td>
+        </tr>
+        <tr>
+          <td>PB</td>
+          <td>~4x</td>
+          <td>~2x</td>
+          <td>~55x</td>
+        </tr>
+        <tr>
+          <td>机构评级</td>
+          <td class="tag tag-green">全员买入</td>
+          <td class="tag tag-blue">增持</td>
+          <td class="tag tag-green">增持</td>
+        </tr>
+        <tr>
+          <td>目标价</td>
+          <td>666–750 HKD</td>
+          <td>$128–$165</td>
+          <td>$250–$320</td>
+        </tr>
+        <tr>
+          <td>上涨空间</td>
+          <td class="good">+33%~+50%</td>
+          <td class="warn">0%~+29%</td>
+          <td class="good">+25%~+60%</td>
+        </tr>
+        <tr>
+          <td>股息/回购</td>
+          <td>¥196亿回购+5.3港币/股</td>
+          <td>$119亿回购</td>
+          <td>回购+分红</td>
+        </tr>
+        <tr>
+          <td>AI CapEx</td>
+          <td>¥224亿/季</td>
+          <td>高投入期</td>
+          <td>极高</td>
+        </tr>
+        <tr>
+          <td>综合评分</td>
+          <td class="good">⭐⭐⭐⭐⭐ 9/10</td>
+          <td class="warn">⭐⭐⭐⭐ 7.5/10</td>
+          <td class="good">⭐⭐⭐⭐⭐ 8.5/10</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- SECTION 1: TENCENT -->
+<div class="section" id="tencent">
+  <div class="section-title">🦉 腾讯控股 (0700.HK) · FY2025</div>
+
+  <div class="kpi-row">
+    <div class="kpi">
+      <div class="val">499 HKD</div>
+      <div class="lbl">当前股价</div>
+    </div>
+    <div class="kpi up">
+      <div class="val">¥4.55万亿</div>
+      <div class="lbl">总市值</div>
+    </div>
+    <div class="kpi up">
+      <div class="val">18.3x</div>
+      <div class="lbl">PE (TTM)</div>
+    </div>
+    <div class="kpi up">
+      <div class="val">¥7,518亿</div>
+      <div class="lbl">营收 (+14%)</div>
+    </div>
+    <div class="kpi up">
+      <div class="val">¥2,596亿</div>
+      <div class="lbl">净利润 (+17%)</div>
+    </div>
+    <div class="kpi up">
+      <div class="val">34.5%</div>
+      <div class="lbl">净利率</div>
+    </div>
+    <div class="kpi up">
+      <div class="val">~30%</div>
+      <div class="lbl">ROE</div>
+    </div>
+    <div class="kpi">
+      <div class="val">¥196亿</div>
+      <div class="lbl">年度回购</div>
+    </div>
+    <div class="kpi up">
+      <div class="val">666–750</div>
+      <div class="lbl">目标价 (HKD)</div>
     </div>
   </div>
 
-  <nav class="nav">
-    <ul>
-      <li><a href="#compare">⚖️ 对比</a></li>
-      <li><a href="#tencent">🇨🇳 腾讯</a></li>
-      <li><a href="#alibaba">🏆 阿里</a></li>
-      <li><a href="#nvda">📈 英伟达</a></li>
-    </ul>
-  </nav>
+  <div class="card">
+    <div class="card-title">分部收入构成 (FY2025)</div>
+    <canvas id="chart-tencent-seg" height="260"></canvas>
+  </div>
 
-  
-<section id="compare" class="section">
-  <div class="section-title">⚖️ 三标的横向对比</div>
   <div class="card">
-    <div class="table-wrap">
-      <table>
-        <tr><th>维度</th><th>腾讯 0700.HK</th><th>阿里巴巴 BABA</th><th>英伟达 NVDA</th></tr>
-        <tr><td>综合评分</td><td class="up">8.5/10</td><td>7.5/10</td><td class="up">8/10</td></tr>
-        <tr><td>当前股价</td><td>HK$497</td><td>$128</td><td>$199.53</td></tr>
-        <tr><td>PE TTM</td><td class="up">17.5x</td><td>23.2x</td><td>40.7x</td></tr>
-        <tr><td>ROE</td><td>28.5%</td><td>15.0%</td><td class="up">101.5%</td></tr>
-        <tr><td>评级</td><td class="up">增持</td><td>谨慎增持</td><td class="up">增持</td></tr>
-        <tr><td>目标价</td><td>HK$540-580</td><td>$145-165</td><td>$250-320</td></tr>
-        <tr><td>上行空间</td><td>+15%~+20%</td><td>+13%~+29%</td><td class="up">+25%~+60%</td></tr>
-        <tr><td>护城河</td><td class="up">极强</td><td>较强</td><td>极强</td></tr>
-        <tr><td>成长性</td><td>稳健</td><td>AI驱动</td><td class="up">爆发</td></tr>
-        <tr><td>估值吸引力</td><td class="up">较高</td><td>高</td><td>中等</td></tr>
-        <tr><td>主要风险</td><td>字节竞争</td><td>抖音/拼多多</td><td>估值/竞争</td></tr>
-      </table>
-    </div>
+    <div class="card-title">季度营收趋势 (FY2024–FY2025)</div>
+    <canvas id="chart-tencent-quarter" height="260"></canvas>
   </div>
-  <div class="card">
-    <div class="card-title">CIO 配置建议</div>
-    <div class="table-wrap">
-      <table>
-        <tr><th>标的</th><th>建议仓位</th><th>逻辑</th></tr>
-        <tr><td>腾讯 0700.HK</td><td class="up">30-40%</td><td>护城河极强，估值低，回购积极，政策暖风</td></tr>
-        <tr><td>阿里巴巴 BABA</td><td>15-25%</td><td>AI战略期，估值低，云计算长期价值</td></tr>
-        <tr><td>英伟达 NVDA</td><td>20-30%</td><td>AI算力爆发，ROE极高，成长性最强</td></tr>
-        <tr><td>现金/其他</td><td>15-25%</td><td>等待更好的买点，分散尾部风险</td></tr>
-      </table>
-    </div>
-  </div>
-</section>
-<section id="tencent" class="section">
-  <div class="section-title">🇨🇳 腾讯控股 (0700.HK)</div>
-  <div class="kpi-grid">
-  <div class="kpi neutral">
-  <div class="val" style="color:#58a6ff">8.5/10</div>
-  <div class="lbl">综合评分</div>
-  <div class="sub">巴菲特框架</div>
-</div>
-  <div class="kpi neutral">
-  <div class="val" style="color:#58a6ff">HK$497.0</div>
-  <div class="lbl">当前股价</div>
-  <div class="sub">04/15</div>
-</div>
-  <div class="kpi neutral">
-  <div class="val" style="color:#58a6ff">17.5x</div>
-  <div class="lbl">PE TTM</div>
-  <div class="sub">历史偏低分位</div>
-</div>
-  <div class="kpi neutral">
-  <div class="val" style="color:#58a6ff">28.5%</div>
-  <div class="lbl">ROE</div>
-  <div class="sub">卓越股东回报</div>
-</div>
-  <div class="kpi up">
-  <div class="val" style="color:#3fb950">增持</div>
-  <div class="lbl">评级</div>
-  <div class="sub">+15%~+20%</div>
-</div>
-  <div class="kpi neutral">
-  <div class="val" style="color:#58a6ff">HK$540-580</div>
-  <div class="lbl">目标价</div>
-  <div class="sub">中金/汇丰</div>
-</div>
-</div>
-  <div class="charts-grid">
-    <div class="chart-card">
-  <div class="chart-title">收入结构分布 (FY2025)</div>
-  <canvas id="tseg" class="chart" height="280" data-type="pie" data-data='[{\'l\': \'增值服务\', \'v\': 46}, {\'l\': \'金融科技\', \'v\': 22}, {\'l\': \'广告\', \'v\': 20}, {\'l\': \'云及其他\', \'v\': 12}]'></canvas>
-</div>
-    <div class="chart-card">
-  <div class="chart-title">营收 vs 净利润 (近4季度)</div>
-  <canvas id="trev" class="chart" height="280" data-type="line" data-datasets='[{\'label\': \'营收(亿RMB)\', \'color\': \'#ff6b35\', \'data\': [1595, 1672, 1726, 1815]}, {\'label\': \'净利(亿RMB)\', \'color\': \'#3fb950\', \'data\': [425, 447, 532, 561]}]'></canvas>
-</div>
-    <div class="chart-card">
-  <div class="chart-title">五维度健康度雷达图</div>
-  <canvas id="tradar" class="chart" height="300" data-type="radar" data-labels='营收增长|净利率|ROE|现金充裕|监管环境' data-datasets='[{\'label\': \'腾讯\', \'color\': \'#ff6b35\', \'data\': [{\'l\': \'营收增长\', \'v\': 0.82}, {\'l\': \'净利率\', \'v\': 0.305}, {\'l\': \'ROE\', \'v\': 0.285}, {\'l\': \'现金充裕\', \'v\': 0.95}, {\'l\': \'监管趋缓\', \'v\': 0.7}]}, {\'label\': \'理想\', \'color\': \'#58a6ff\', \'data\': [1, 0.5, 0.5, 0.8, 0.7]}]'></canvas>
-</div>
-    <div class="chart-card">
-  <div class="chart-title">ROE 股东回报 (28.5%)</div>
-  <canvas id="tpee" class="chart" height="200" data-type="gauge" data-value='28.5' data-min='0' data-max='50' data-label='ROE %'></canvas>
-</div>
-    <div class="chart-card">
-  <div class="chart-title">估值对比 (港元)</div>
-  <canvas id="tval" class="chart" height="220" data-type="barh" data-data='[{\'l\': \'PE估值\', \'v\': 540}, {\'l\': \'DCF估值\', \'v\': 520}, {\'l\': \'SOTP\', \'v\': 580}, {\'l\': \'当前价\', \'v\': 497}]'></canvas>
-</div>
-  </div>
-  <div class="card">
-    <div class="card-title">护城河分析</div>
-    <div class="moat-list"><div class="moat-item">
-  <div class="moat-icon" style="background:rgba(63,185,80,0.15)">🛡️</div>
-  <div class="moat-content">
-    <h4>微信社交关系链垄断 <span class="moat-strength strong">极强</span></h4>
-    <p>12亿MAU，关系链无法迁移</p>
-  </div>
-</div><div class="moat-item">
-  <div class="moat-icon" style="background:rgba(63,185,80,0.15)">🛡️</div>
-  <div class="moat-content">
-    <h4>小程序生态 <span class="moat-strength strong">强</span></h4>
-    <p>700万小程序，锁定商家和用户</p>
-  </div>
-</div><div class="moat-item">
-  <div class="moat-icon" style="background:rgba(63,185,80,0.15)">🛡️</div>
-  <div class="moat-content">
-    <h4>微信支付协同锁定 <span class="moat-strength strong">极强</span></h4>
-    <p>支付+社交+小程序三环锁定</p>
-  </div>
-</div><div class="moat-item">
-  <div class="moat-icon" style="background:rgba(63,185,80,0.15)">🛡️</div>
-  <div class="moat-content">
-    <h4>内容生态(视频号) <span class="moat-strength medium">较强</span></h4>
-    <p>短视频竞争缩小与抖音差距</p>
-  </div>
-</div><div class="moat-item">
-  <div class="moat-icon" style="background:rgba(63,185,80,0.15)">🛡️</div>
-  <div class="moat-content">
-    <h4>游戏Pipeline <span class="moat-strength weak">中</span></h4>
-    <p>DNF手游等新品上线</p>
-  </div>
-</div></div>
-  </div>
-  <div class="card">
-    <div class="card-title">风险评估</div>
-    <div class="risk-list"><div class="risk-item">
-  <span class="risk-name">字节竞争</span>
-  <span class="risk-bar"><span class="risk-fill" style="width:60.0%;background:#f85149"></span></span>
-  <span class="risk-pct">60%</span>
-</div><div class="risk-item">
-  <span class="risk-name">监管风险</span>
-  <span class="risk-bar"><span class="risk-fill" style="width:40.0%;background:#d29922"></span></span>
-  <span class="risk-pct">40%</span>
-</div><div class="risk-item">
-  <span class="risk-name">游戏依赖</span>
-  <span class="risk-bar"><span class="risk-fill" style="width:35.0%;background:#3fb950"></span></span>
-  <span class="risk-pct">35%</span>
-</div><div class="risk-item">
-  <span class="risk-name">宏观消费</span>
-  <span class="risk-bar"><span class="risk-fill" style="width:40.0%;background:#d29922"></span></span>
-  <span class="risk-pct">40%</span>
-</div><div class="risk-item">
-  <span class="risk-name">港股流动性</span>
-  <span class="risk-bar"><span class="risk-fill" style="width:30.0%;background:#3fb950"></span></span>
-  <span class="risk-pct">30%</span>
-</div></div>
-  </div>
-  <div class="card verdict">
-    <div class="verdict-badge">增持</div>
-    <div>
-      <div class="verdict-title">腾讯 (0700.HK) | 综合评分 8.5/10</div>
-      <p>腾讯当前处于中周期底部右侧，微信生态护城河极强，AI赋能广告和云业务带来增量，政策暖风频吹，游戏 Pipeline 改善。合理估值540-580港元，对应当前497港元上涨空间15-20%。</p>
-    </div>
-  </div>
-</section>
-<section id="alibaba" class="section">
-  <div class="section-title">🏆 阿里巴巴 (BABA)</div>
-  <div class="kpi-grid">
-  <div class="kpi neutral">
-  <div class="val" style="color:#58a6ff">7.5/10</div>
-  <div class="lbl">综合评分</div>
-  <div class="sub">AI战略投入期</div>
-</div>
-  <div class="kpi neutral">
-  <div class="val" style="color:#58a6ff">$128.01</div>
-  <div class="lbl">当前股价</div>
-  <div class="sub">04/15</div>
-</div>
-  <div class="kpi neutral">
-  <div class="val" style="color:#58a6ff">23.15x</div>
-  <div class="lbl">PE TTM</div>
-  <div class="sub">历史分位偏低</div>
-</div>
-  <div class="kpi neutral">
-  <div class="val" style="color:#58a6ff">15.0%</div>
-  <div class="lbl">ROE</div>
-  <div class="sub">稳健</div>
-</div>
-  <div class="kpi up">
-  <div class="val" style="color:#3fb950">谨慎增持</div>
-  <div class="lbl">评级</div>
-  <div class="sub">+13%~+29%</div>
-</div>
-  <div class="kpi neutral">
-  <div class="val" style="color:#58a6ff">$145-165</div>
-  <div class="lbl">目标价</div>
-  <div class="sub">综合估值</div>
-</div>
-</div>
-  <div class="charts-grid">
-    <div class="chart-card">
-  <div class="chart-title">收入结构分布 (FY2025)</div>
-  <canvas id="aseg" class="chart" height="280" data-type="pie" data-data='[{\'l\': \'淘天电商\', \'v\': 52}, {\'l\': \'云计算\', \'v\': 12}, {\'l\': \'国际商业\', \'v\': 9}, {\'l\': \'菜鸟\', \'v\': 7}, {\'l\': \'其他\', \'v\': 20}]'></canvas>
-</div>
-    <div class="chart-card">
-  <div class="chart-title">营收 vs 净利润 (近4季度)</div>
-  <canvas id="arev" class="chart" height="280" data-type="line" data-datasets='[{\'label\': \'营收(亿美元)\', \'color\': \'#ff6b35\', \'data\': [236, 280, 295, 243]}, {\'label\': \'净利(亿美元)\', \'color\': \'#3fb950\', \'data\': [243, 340, 126, 72]}]'></canvas>
-</div>
-    <div class="chart-card">
-  <div class="chart-title">五维度健康度雷达图</div>
-  <canvas id="aradar" class="chart" height="300" data-type="radar" data-labels='营收增长|净利率|ROE|AI投入|监管环境' data-datasets='[{\'label\': \'阿里\', \'color\': \'#ff6b35\', \'data\': [{\'l\': \'营收增长\', \'v\': 0.68}, {\'l\': \'净利率\', \'v\': 0.2}, {\'l\': \'ROE\', \'v\': 0.15}, {\'l\': \'AI投入\', \'v\': 0.75}, {\'l\': \'监管暖风\', \'v\': 0.6}]}, {\'label\': \'理想\', \'color\': \'#58a6ff\', \'data\': [1, 0.5, 0.5, 0.8, 0.7]}]'></canvas>
-</div>
-    <div class="chart-card">
-  <div class="chart-title">ROE 股东回报 (15%)</div>
-  <canvas id="apee" class="chart" height="200" data-type="gauge" data-value='15.0' data-min='0' data-max='30' data-label='ROE %'></canvas>
-</div>
-    <div class="chart-card">
-  <div class="chart-title">估值对比 (美元)</div>
-  <canvas id="aval" class="chart" height="220" data-type="barh" data-data='[{\'l\': \'综合估值上限\', \'v\': 165}, {\'l\': \'综合估值中值\', \'v\': 155}, {\'l\': \'综合估值下限\', \'v\': 145}, {\'l\': \'当前价\', \'v\': 128}]'></canvas>
-</div>
-  </div>
-  <div class="card">
-    <div class="card-title">风险评估</div>
-    <div class="risk-list"><div class="risk-item">
-  <span class="risk-name">抖音竞争</span>
-  <span class="risk-bar"><span class="risk-fill" style="width:75.0%;background:#f85149"></span></span>
-  <span class="risk-pct">75%</span>
-</div><div class="risk-item">
-  <span class="risk-name">拼多多竞争</span>
-  <span class="risk-bar"><span class="risk-fill" style="width:65.0%;background:#f85149"></span></span>
-  <span class="risk-pct">65%</span>
-</div><div class="risk-item">
-  <span class="risk-name">AI CapEx</span>
-  <span class="risk-bar"><span class="risk-fill" style="width:50.0%;background:#d29922"></span></span>
-  <span class="risk-pct">50%</span>
-</div><div class="risk-item">
-  <span class="risk-name">中美关系</span>
-  <span class="risk-bar"><span class="risk-fill" style="width:60.0%;background:#f85149"></span></span>
-  <span class="risk-pct">60%</span>
-</div><div class="risk-item">
-  <span class="risk-name">宏观消费</span>
-  <span class="risk-bar"><span class="risk-fill" style="width:45.0%;background:#d29922"></span></span>
-  <span class="risk-pct">45%</span>
-</div></div>
-  </div>
-  <div class="card verdict">
-    <div class="verdict-badge" style="background:#d29922">谨慎增持</div>
-    <div>
-      <div class="verdict-title">阿里巴巴 (BABA) | 综合评分 7.5/10</div>
-      <p>阿里巴巴处于AI战略投入期，云计算和国际业务为长期增长引擎，当前估值偏低(PE23x)，目标价145-165美元，上涨空间13-29%。主要风险：抖音/拼多多竞争加剧，中美关系影响估值。</p>
-    </div>
-  </div>
-</section>
-<section id="nvda" class="section">
-  <div class="section-title">📈 英伟达 (NVDA)</div>
-  <div class="kpi-grid">
-  <div class="kpi neutral">
-  <div class="val" style="color:#58a6ff">8/10</div>
-  <div class="lbl">综合评分</div>
-  <div class="sub">AI算力龙头</div>
-</div>
-  <div class="kpi neutral">
-  <div class="val" style="color:#58a6ff">$199.53</div>
-  <div class="lbl">当前股价</div>
-  <div class="sub">04/15</div>
-</div>
-  <div class="kpi neutral">
-  <div class="val" style="color:#58a6ff">40.7x</div>
-  <div class="lbl">PE TTM</div>
-  <div class="sub">偏高但成长性支撑</div>
-</div>
-  <div class="kpi neutral">
-  <div class="val" style="color:#58a6ff">101.5%</div>
-  <div class="lbl">ROE</div>
-  <div class="sub">极致股东回报</div>
-</div>
-  <div class="kpi up">
-  <div class="val" style="color:#3fb950">增持</div>
-  <div class="lbl">评级</div>
-  <div class="sub">+25%~+60%</div>
-</div>
-  <div class="kpi neutral">
-  <div class="val" style="color:#58a6ff">$250-320</div>
-  <div class="lbl">目标价</div>
-  <div class="sub">机构共识</div>
-</div>
-</div>
-  <div class="charts-grid">
-    <div class="chart-card">
-  <div class="chart-title">收入结构 (FY26 Q4，数据中心占88%)</div>
-  <canvas id="nseg" class="chart" height="280" data-type="pie" data-data='[{\'l\': \'数据中心\', \'v\': 88}, {\'l\': \'游戏\', \'v\': 5}, {\'l\': \'专业可视化\', \'v\': 4}, {\'l\': \'汽车\', \'v\': 3}]'></canvas>
-</div>
-    <div class="chart-card">
-  <div class="chart-title">营收 vs 净利润 (FY26 Q1-Q4)</div>
-  <canvas id="nrev" class="chart" height="280" data-type="line" data-datasets='[{\'label\': \'营收($B)\', \'color\': \'#ff6b35\', \'data\': [26, 36, 51, 68]}, {\'label\': \'净利($B)\', \'color\': \'#3fb950\', \'data\': [14.9, 21.4, 35.1, 43.0]}]'></canvas>
-</div>
-    <div class="chart-card">
-  <div class="chart-title">五维度健康度雷达图</div>
-  <canvas id="nradar" class="chart" height="300" data-type="radar" data-labels='营收增长|净利率|ROE|竞争壁垒|AI需求' data-datasets='[{\'label\': \'英伟达\', \'color\': \'#ff6b35\', \'data\': [{\'l\': \'营收增长\', \'v\': 0.95}, {\'l\': \'净利率\', \'v\': 0.63}, {\'l\': \'ROE\', \'v\': 1.0}, {\'l\': \'竞争壁垒\', \'v\': 0.9}, {\'l\': \'AI需求\', \'v\': 0.95}]}, {\'label\': \'理想\', \'color\': \'#58a6ff\', \'data\': [1, 0.8, 0.8, 0.9, 1]}]'></canvas>
-</div>
-    <div class="chart-card">
-  <div class="chart-title">ROE 股东回报 (101.5%)</div>
-  <canvas id="npee" class="chart" height="200" data-type="gauge" data-value='101.5' data-min='0' data-max='120' data-label='ROE %'></canvas>
-</div>
-    <div class="chart-card">
-  <div class="chart-title">机构目标价对比 ($)</div>
-  <canvas id="ntarget" class="chart" height="220" data-type="barh" data-data='[{\'l\': \'高盛目标\', \'v\': 320}, {\'l\': \'美银目标\', \'v\': 300}, {\'l\': \'摩根大通\', \'v\': 285}, {\'l\': \'当前价\', \'v\': 200}]'></canvas>
-</div>
-  </div>
-  <div class="card">
-    <div class="card-title">关键财务指标 (FY26)</div>
-    <div class="table-wrap">
-      <table>
-        <tr><th>指标</th><th>数值</th><th>同比</th></tr>
-        <tr><td>Q4 营收</td><td class="up">$68.1B</td><td class="up">+73% YoY</td></tr>
-        <tr><td>Q4 净利润</td><td class="up">$43.0B</td><td class="up">+94% YoY</td></tr>
-        <tr><td>毛利率</td><td class="up">75.0%</td><td>+2.5pp</td></tr>
-        <tr><td>净利率</td><td class="up">63.0%</td><td>+8pp</td></tr>
-        <tr><td>ROE</td><td class="up">101.5%</td><td>+25pp</td></tr>
-      </table>
-    </div>
-  </div>
-  <div class="card verdict">
-    <div class="verdict-badge">增持</div>
-    <div>
-      <div class="verdict-title">英伟达 (NVDA) | 综合评分 8/10</div>
-      <p>英伟达AI芯片需求爆发，数据中心收入连续4季度翻倍增长。FY26 Q4营收$68.1B(+73%)，净利润$43B(+94%)，ROE高达101.5%。合理目标价$250-320，估值偏贵但成长性支撑，当前价位可配置。</p>
-    </div>
-  </div>
-</section>
 
-  <div class="footer">
-    <span>分析方法: 巴菲特量化框架 | 波特五力 | DuPont | DCF | SOTP | 宏观+行业+财务+估值+风险</span>
-    <br>
-    <span>腾讯评分: 8.5/10 | 阿里巴巴: 7.5/10 | 英伟达: 8/10</span>
-    <br>
-    <span style="margin-top:8px;display:block">⚠️ 本报告仅供参考，不构成投资建议。投资有风险，决策需谨慎。</span>
+  <div class="card">
+    <div class="card-title">盈利能力趋势</div>
+    <canvas id="chart-tencent-margins" height="260"></canvas>
+  </div>
+
+  <div class="card">
+    <div class="card-title">ROE vs 行业平均</div>
+    <canvas id="chart-tencent-roe" height="260"></canvas>
+  </div>
+
+  <div class="card">
+    <div class="card-title">商业护城河评估</div>
+    <div class="moat-grid">
+      <div class="moat-item" style="border-color:var(--green);">
+        <div class="icon">🌐</div>
+        <div class="label">微信生态</div>
+        <div class="desc">13亿月活，超级App护城河极深</div>
+      </div>
+      <div class="moat-item" style="border-color:var(--green);">
+        <div class="icon">🎮</div>
+        <div class="label">游戏垄断</div>
+        <div class="desc">本土+国际双第一，壁垒极高</div>
+      </div>
+      <div class="moat-item" style="border-color:var(--green);">
+        <div class="icon">💰</div>
+        <div class="label">财务实力</div>
+        <div class="desc">¥1,071亿净现金，股东回报丰厚</div>
+      </div>
+      <div class="moat-item" style="border-color:var(--yellow);">
+        <div class="icon">🤖</div>
+        <div class="label">AI转型</div>
+        <div class="desc">AI投入大，短期压制利润率</div>
+      </div>
+      <div class="moat-item" style="border-color:var(--yellow);">
+        <div class="icon">📉</div>
+        <div class="label">宏观风险</div>
+        <div class="desc">消费承压+监管持续扰动</div>
+      </div>
+      <div class="moat-item" style="border-color:var(--blue);">
+        <div class="icon">🔄</div>
+        <div class="label">股东回报</div>
+        <div class="desc">196亿回购+5.3港元派息，持续增厚</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">估值分析</div>
+    <div class="row-card">
+      <div class="mini">
+        <div class="val" style="color:var(--green);">18.3x</div>
+        <div class="lbl">当前 PE</div>
+      </div>
+      <div class="mini">
+        <div class="val">~4x</div>
+        <div class="lbl">PB</div>
+      </div>
+      <div class="mini">
+        <div class="val" style="color:var(--yellow);">666 HKD</div>
+        <div class="lbl">中金目标价</div>
+      </div>
+      <div class="mini">
+        <div class="val" style="color:var(--green);">750 HKD</div>
+        <div class="lbl">摩根士丹利目标价</div>
+      </div>
+    </div>
+    <div style="margin-top:10px;font-size:12px;color:var(--txt2);">
+      <strong style="color:var(--txt);">DCF 估值:</strong> 合理价值区间 <span style="color:var(--green);">¥600–720 HKD</span>，当前499处于低估区间
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">风险矩阵</div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;">
+      <div>
+        <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px;">
+          <span>监管政策收紧</span><span style="color:var(--yellow);">中等</span>
+        </div>
+        <div class="risk-bar"><div class="risk-fill" style="width:55%;background:linear-gradient(90deg,#9e6a03,#d29922);"></div></div>
+        <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px;margin-top:8px;">
+          <span>游戏政策风险</span><span style="color:var(--green);">低</span>
+        </div>
+        <div class="risk-bar"><div class="risk-fill" style="width:25%;background:linear-gradient(90deg,#238636,#3fb950);"></div></div>
+      </div>
+      <div>
+        <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px;">
+          <span>AI资本开支压力</span><span style="color:var(--yellow);">中等</span>
+        </div>
+        <div class="risk-bar"><div class="risk-fill" style="width:60%;background:linear-gradient(90deg,#9e6a03,#d29922);"></div></div>
+        <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px;margin-top:8px;">
+          <span>消费宏观风险</span><span style="color:var(--yellow);">低-中</span>
+        </div>
+        <div class="risk-bar"><div class="risk-fill" style="width:40%;background:linear-gradient(90deg,#9e6a03,#d29922);"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="verdict">
+    <h3>🦉 腾讯投资结论</h3>
+    <p>
+      <strong>评级: 增持 | 目标价: ¥666–750 HKD | 上涨空间: +33%~+50%</strong><br><br>
+      腾讯FY2025交出了教科书级别的成绩单：Non-IFRS净利润+17%至¥2,596亿，PE仅18x，处于历史低位。微信13亿月活护城河极深，游戏业务本土+国际双驱动，广告受益AI优化持续增长。<br><br>
+      <strong>核心逻辑:</strong> (1) 微信生态变现空间尚大 (2) 资本配置优化，196亿回购持续 (3) AI赋能广告/金融科技效率提升<br>
+      <strong>主要风险:</strong> 监管不确定性、AI资本开支压制短期利润率、消费复苏低于预期<br>
+      <strong>CIO裁决:</strong> 维持超配，目标价¥700 HKD止损位¥420 HKD。
+    </p>
   </div>
 </div>
+
+<!-- SECTION 2: ALIBABA -->
+<div class="section" id="alibaba">
+  <div class="section-title">🏪 阿里巴巴 (BABA) · FY2025</div>
+
+  <div class="kpi-row">
+    <div class="kpi">
+      <div class="val">$128.01</div>
+      <div class="lbl">当前股价</div>
+    </div>
+    <div class="kpi">
+      <div class="val">$3,062亿</div>
+      <div class="lbl">总市值</div>
+    </div>
+    <div class="kpi">
+      <div class="val">23.2x</div>
+      <div class="lbl">PE (TTM)</div>
+    </div>
+    <div class="kpi">
+      <div class="val">¥9,963亿</div>
+      <div class="lbl">营收 (+7%)</div>
+    </div>
+    <div class="kpi">
+      <div class="val">¥1,295亿</div>
+      <div class="lbl">净利润</div>
+    </div>
+    <div class="kpi">
+      <div class="val">13%</div>
+      <div class="lbl">净利率</div>
+    </div>
+    <div class="kpi">
+      <div class="val">~15%</div>
+      <div class="lbl">ROE</div>
+    </div>
+    <div class="kpi">
+      <div class="val">$119亿</div>
+      <div class="lbl">年度回购</div>
+    </div>
+    <div class="kpi">
+      <div class="val">$128–$165</div>
+      <div class="lbl">目标价 (USD)</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">分部收入构成 (FY2025)</div>
+    <canvas id="chart-alibaba-seg" height="260"></canvas>
+  </div>
+
+  <div class="card">
+    <div class="card-title">年度营收与净利润趋势 (FY2021–FY2025)</div>
+    <canvas id="chart-alibaba-annual" height="260"></canvas>
+  </div>
+
+  <div class="card">
+    <div class="card-title">毛利率 vs 净利率</div>
+    <canvas id="chart-alibaba-margins" height="260"></canvas>
+  </div>
+
+  <div class="card">
+    <div class="card-title">ROE & DuPont 三因子 (FY2021–FY2025)</div>
+    <canvas id="chart-alibaba-roe" height="260"></canvas>
+  </div>
+
+  <div class="card">
+    <div class="card-title">商业护城河评估</div>
+    <div class="moat-grid">
+      <div class="moat-item" style="border-color:var(--green);">
+        <div class="icon">🏪</div>
+        <div class="label">电商平台</div>
+        <div class="desc">淘天最大规模，生态完整</div>
+      </div>
+      <div class="moat-item" style="border-color:var(--green);">
+        <div class="icon">☁️</div>
+        <div class="label">阿里云</div>
+        <div class="desc">中国最大公有云，AI驱动增长</div>
+      </div>
+      <div class="moat-item" style="border-color:var(--yellow);">
+        <div class="icon">🔍</div>
+        <div class="label">竞争加剧</div>
+        <div class="desc">拼多多/抖音电商冲击显著</div>
+      </div>
+      <div class="moat-item" style="border-color:var(--yellow);">
+        <div class="icon">🤖</div>
+        <div class="label">AI战略</div>
+        <div class="desc">高投入期，短期压制利润率</div>
+      </div>
+      <div class="moat-item" style="border-color:var(--red);">
+        <div class="icon">🌐</div>
+        <div class="label">地缘政治</div>
+        <div class="desc">中美关系影响估值折价</div>
+      </div>
+      <div class="moat-item" style="border-color:var(--blue);">
+        <div class="icon">💰</div>
+        <div class="label">股东回报</div>
+        <div class="desc">119亿回购，现金充裕¥6,973亿</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">GAAP vs Non-GAAP (FY2024)</div>
+    <table>
+      <tr><th>指标</th><th>FY2024</th><th>说明</th></tr>
+      <tr><td>GAAP净利润</td><td class="down">¥800亿</td><td>含投资减值、股权激励</td></tr>
+      <tr><td>Non-GAAP净利润</td><td class="up">¥1,575亿</td><td>剔除一次性项目</td></tr>
+      <tr><td>差异</td><td class="warn">¥775亿</td><td>主要来自投资组合重估</td></tr>
+    </table>
+  </div>
+
+  <div class="verdict">
+    <h3>🏪 阿里巴巴投资结论</h3>
+    <p>
+      <strong>评级: 增持 | 目标价: $128–$165 | 上涨空间: 0%~+29%</strong><br><br>
+      BABA FY2025营收¥9,963亿(+7%)，净利润受AI投入压制。Non-GAAP口径下盈利能力更强，淘天+阿里云双轮驱动逻辑清晰，监管最坏时刻已过。<br><br>
+      <strong>核心逻辑:</strong> (1) 阿里云AI转型潜力大 (2) 监管暖风+消费复苏双击 (3) ¥6,973亿净现金，股东回报能力强<br>
+      <strong>主要风险:</strong> 抖音/拼多多竞争加剧、AI投入压制短期利润、地缘政治溢价<br>
+      <strong>CIO裁决:</strong> 标配，目标价$145止损位$100。
+    </p>
+  </div>
+</div>
+
+<!-- SECTION 3: NVIDIA -->
+<div class="section" id="nvda">
+  <div class="section-title">🚀 英伟达 (NVDA) · FY2026</div>
+
+  <div class="kpi-row">
+    <div class="kpi">
+      <div class="val">$199.53</div>
+      <div class="lbl">当前股价</div>
+    </div>
+    <div class="kpi up">
+      <div class="val">$4.85T</div>
+      <div class="lbl">总市值</div>
+    </div>
+    <div class="kpi">
+      <div class="val">40.7x</div>
+      <div class="lbl">PE (TTM)</div>
+    </div>
+    <div class="kpi up">
+      <div class="val">$265.9B</div>
+      <div class="lbl">FY26营收 (+114%)</div>
+    </div>
+    <div class="kpi up">
+      <div class="val">$79.8B</div>
+      <div class="lbl">FY26净利润 (+94%)</div>
+    </div>
+    <div class="kpi up">
+      <div class="val">73%</div>
+      <div class="lbl">毛利率</div>
+    </div>
+    <div class="kpi up">
+      <div class="val">63%</div>
+      <div class="lbl">净利率</div>
+    </div>
+    <div class="kpi up">
+      <div class="val">101.5%</div>
+      <div class="lbl">ROE</div>
+    </div>
+    <div class="kpi up">
+      <div class="val">$250–320</div>
+      <div class="lbl">目标价 (USD)</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">业务分部 (FY26 Q4)</div>
+    <canvas id="chart-nvda-seg" height="260"></canvas>
+  </div>
+
+  <div class="card">
+    <div class="card-title">营收与净利润 8季度趋势</div>
+    <canvas id="chart-nvda-quarter" height="260"></canvas>
+  </div>
+
+  <div class="card">
+    <div class="card-title">毛利率 vs 净利率</div>
+    <canvas id="chart-nvda-margins" height="260"></canvas>
+  </div>
+
+  <div class="card">
+    <div class="card-title">ROE & ROA — 卓越股东回报</div>
+    <canvas id="chart-nvda-roe" height="260"></canvas>
+  </div>
+
+  <div class="card">
+    <div class="card-title">机构评级分布 (62家)</div>
+    <canvas id="chart-nvda-rating" height="260"></canvas>
+  </div>
+
+  <div class="card">
+    <div class="card-title">估值带 — DCF情景分析</div>
+    <canvas id="chart-nvda-dcf" height="260"></canvas>
+  </div>
+
+  <div class="card">
+    <div class="card-title">商业护城河</div>
+    <div class="moat-grid">
+      <div class="moat-item" style="border-color:var(--green);">
+        <div class="icon">🧠</div>
+        <div class="label">CUDA生态</div>
+        <div class="desc">全球最大AI训练生态，壁垒极高</div>
+      </div>
+      <div class="moat-item" style="border-color:var(--green);">
+        <div class="icon">⚡</div>
+        <div class="label">算力垄断</div>
+        <div class="desc">数据中心市占率>80%，绝对领导者</div>
+      </div>
+      <div class="moat-item" style="border-color:var(--yellow);">
+        <div class="icon">🏭</div>
+        <div class="label">产能风险</div>
+        <div class="desc">TSMC代工，存在供应链风险</div>
+      </div>
+      <div class="moat-item" style="border-color:var(--yellow);">
+        <div class="icon">🖥️</div>
+        <div class="label">竞争加剧</div>
+        <div class="desc">AMD/谷歌TPU/亚马逊Trainium追赶</div>
+      </div>
+      <div class="moat-item" style="border-color:var(--red);">
+        <div class="icon">📉</div>
+        <div class="label">估值风险</div>
+        <div class="desc">PE 40x，AI泡沫破裂则大幅回调</div>
+      </div>
+      <div class="moat-item" style="border-color:var(--green);">
+        <div class="icon">🚀</div>
+        <div class="label">Blackwell</div>
+        <div class="desc">下一代GPU放量，业绩持续超预期</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="verdict">
+    <h3>🚀 英伟达投资结论</h3>
+    <p>
+      <strong>评级: 增持 | 目标价: $250–$320 | 上涨空间: +25%~+60%</strong><br><br>
+      NVDA FY26 Q4营收$68.1B(+73% YoY)，净利润$43B(+94%)，ROE高达101.5%。Blackwell GPU供不应求，数据中心业务爆发式增长，AI基础设施超级周期仍在早期阶段。<br><br>
+      <strong>核心逻辑:</strong> (1) 全球AI算力需求爆发，CUDA生态护城河极深 (2) Blackwell放量 (3) 软件收入占比提升改善毛利率<br>
+      <strong>主要风险:</strong> 估值偏贵(PE 40x)、客户自研芯片(谷歌/亚马逊)、地缘政治出口管制<br>
+      <strong>CIO裁决:</strong> 超配，目标价$285止损位$160。
+    </p>
+  </div>
+</div>
+
+<!-- SECTION 4: CIO DECISION -->
+<div class="section" id="conclusion">
+  <div class="section-title">👑 CIO 资产配置建议</div>
+
+  <div class="card">
+    <div class="card-title">建议持仓权重</div>
+    <canvas id="chart-portfolio-pie" height="300"></canvas>
+  </div>
+
+  <div class="card">
+    <div class="card-title">三标的综合评估</div>
+    <table>
+      <thead>
+        <tr><th>维度</th><th>腾讯 ⭐⭐⭐⭐⭐</th><th>阿里 ⭐⭐⭐⭐</th><th>英伟达 ⭐⭐⭐⭐⭐</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>成长性</td><td class="up">⭐⭐⭐⭐</td><td class="warn">⭐⭐⭐</td><td class="up">⭐⭐⭐⭐⭐</td></tr>
+        <tr><td>盈利能力</td><td class="up">⭐⭐⭐⭐⭐</td><td class="warn">⭐⭐⭐</td><td class="up">⭐⭐⭐⭐⭐</td></tr>
+        <tr><td>护城河深度</td><td class="up">⭐⭐⭐⭐⭐</td><td class="warn">⭐⭐⭐⭐</td><td class="up">⭐⭐⭐⭐</td></tr>
+        <tr><td>估值吸引力</td><td class="up">⭐⭐⭐⭐⭐</td><td class="warn">⭐⭐⭐⭐</td><td class="warn">⭐⭐⭐</td></tr>
+        <tr><td>股东回报</td><td class="up">⭐⭐⭐⭐⭐</td><td class="warn">⭐⭐⭐⭐</td><td class="up">⭐⭐⭐⭐</td></tr>
+        <tr><td>风险可控性</td><td class="warn">⭐⭐⭐⭐</td><td class="warn">⭐⭐⭐</td><td class="warn">⭐⭐⭐</td></tr>
+        <tr><td>综合评分</td><td class="up">⭐⭐⭐⭐⭐ 9/10</td><td class="warn">⭐⭐⭐⭐ 7.5/10</td><td class="up">⭐⭐⭐⭐⭐ 8.5/10</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="verdict">
+    <h3>👑 CIO 最终裁决</h3>
+    <p>
+      <strong>腾讯 (40%) · 英伟达 (35%) · 阿里巴巴 (25%)</strong><br><br>
+      当前宏观环境下，建议超配腾讯(估值最低、护城河最深、股东回报最丰厚)，标配英伟达(成长最强但估值偏贵)，标配阿里(AI转型潜力大但竞争加剧)。<br><br>
+      <strong>腾讯:</strong> 目标¥700 HKD，止损¥420 HKD。PE 18x处于历史低位，196亿回购+5.3港元股息提供安全边际。<br>
+      <strong>英伟达:</strong> 目标$285，止损$160。AI超级周期仍在早期，每次回调都是加仓机会。<br>
+      <strong>阿里:</strong> 目标$145，止损$100。静待AI商业化变现开花结果。
+    </p>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  数据来源: 新浪财经 / 富途牛牛 / 36kr / Yahoo Finance / Futu · 生成时间: 2026-04-15 · 本报告仅供参考，不构成投资建议
+</div>
+
+</div><!-- container -->
 
 <script>
-//
-// Pure Canvas Charts - Zero CDN Dependency
-var C = {
-  colors: ['#ff6b35','#3fb950','#58a6ff','#d29922','#bc8cff','#f85149','#7ee787','#ffa657'],
-  font: '12px -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif',
-  format: function(n) {
-    if(n >= 1e12) return (n/1e12).toFixed(1)+'T';
-    if(n >= 1e11) return (n/1e11).toFixed(1)+'K';
-    if(n >= 1e8) return (n/1e8).toFixed(1)+'B';
-    if(n >= 1e4) return (n/1e4).toFixed(1)+'W';
-    return n.toFixed(1);
-  },
-  bar: function(ctx, data, w, h, colors) {
-    var max = Math.max(...data.map(d=>d.v));
-    var min = Math.min(0, ...data.map(d=>d.v));
-    var range = max - min || 1;
-    var bw = (w - 60) / data.length;
-    var gx = 40, gy = 10, gh = h - 30;
-    ctx.strokeStyle='#30363d'; ctx.lineWidth=1;
-    ctx.beginPath(); ctx.moveTo(gx,gy); ctx.lineTo(gx,h-20); ctx.lineTo(w-10,h-20); ctx.stroke();
-    for(var i=0;i<=4;i++){
-      var y = h-20 - (i/4)*gh;
-      var v = min + (i/4)*range;
-      ctx.fillStyle='#484f58'; ctx.font='10px sans-serif';
-      ctx.fillText(this.format(v),2,y+4);
-      ctx.strokeStyle='#21262d'; ctx.setLineDash([3,3]);
-      ctx.beginPath(); ctx.moveTo(gx,y); ctx.lineTo(w-10,y); ctx.stroke();
-      ctx.setLineDash([]);
-    }
-    data.forEach(function(d,i){
-      var bh = ((d.v - min)/range)*gh;
-      var x = gx + i*bw + 4;
-      var c = colors ? colors[i%colors.length] : C.colors[i%C.colors.length];
-      ctx.fillStyle = d.v>=0 ? c : '#f85149';
-      var barH = Math.abs(bh)*((d.v>=0?1:-1));
-      var barY = d.v>=0 ? h-20-bh : h-20;
-      ctx.fillRect(x, barY, bw-8, barH);
-      ctx.fillStyle='#8b949e'; ctx.font='10px sans-serif';
-      ctx.fillText(d.l, x + (bw-8)/2 - ctx.measureText(d.l).width/2, h-4, bw-8);
-    });
-  },
-  line: function(ctx, datasets, w, h) {
-    var allVals = datasets.flatMap(d=>d.data);
-    var max = Math.max(...allVals), min = Math.min(...allVals);
-    var range = (max-min)||1;
-    var gx=50, gy=10, gh=h-30, gw=w-60;
-    ctx.strokeStyle='#30363d'; ctx.lineWidth=1;
-    ctx.beginPath(); ctx.moveTo(gx,gy); ctx.lineTo(gx,h-20); ctx.lineTo(w-10,h-20); ctx.stroke();
-    for(var i=0;i<=4;i++){
-      var y=h-20-(i/4)*gh, v=min+(i/4)*range;
-      ctx.fillStyle='#484f58'; ctx.font='10px sans-serif';
-      ctx.fillText(C.format(v),2,y+4);
-      ctx.strokeStyle='#21262d'; ctx.setLineDash([3,3]);
-      ctx.beginPath(); ctx.moveTo(gx,y); ctx.lineTo(w-10,y); ctx.stroke();
-      ctx.setLineDash([]);
-    }
-    datasets.forEach(function(ds,di){
-      var stepX = gw/(ds.data.length-1);
-      ctx.strokeStyle=ds.color||C.colors[di%C.colors.length];
-      ctx.lineWidth=2; ctx.beginPath();
-      ds.data.forEach(function(v,i){
-        var x=gx+i*stepX, y=h-20-((v-min)/range)*gh;
-        i===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
-      }); ctx.stroke();
-      ctx.fillStyle=ds.color||C.colors[di%C.colors.length];
-      ds.data.forEach(function(v,i){
-        var x=gx+i*stepX, y=h-20-((v-min)/range)*gh;
-        ctx.beginPath(); ctx.arc(x,y,3,0,Math.PI*2); ctx.fill();
-      });
-    });
-    // Legend
-    var lx=gx, ly=h+2;
-    datasets.forEach(function(ds,i){
-      ctx.strokeStyle=ds.color||C.colors[i%C.colors.length];
-      ctx.lineWidth=2; ctx.beginPath(); ctx.moveTo(lx,ly); ctx.lineTo(lx+20,ly); ctx.stroke();
-      ctx.fillStyle='#8b949e'; ctx.font='10px sans-serif';
-      ctx.fillText(ds.label, lx+24, ly+4);
-      lx += 100;
-    });
-  },
-  pie: function(ctx, data, w, h) {
-    var cx=w/2, cy=h/2-10, r=Math.min(w,h)/2-30;
-    var total=data.reduce(function(s,d){return s+d.v},0);
-    var a=-Math.PI/2, lbls=[];
-    data.forEach(function(d,i){
-      var sa=a, ea=a+(d.v/total)*Math.PI*2; a=ea;
-      ctx.fillStyle=C.colors[i%C.colors.length];
-      ctx.beginPath(); ctx.moveTo(cx,cy); ctx.arc(cx,cy,r,sa,ea); ctx.closePath(); ctx.fill();
-      var mid=(sa+ea)/2;
-      if((ea-sa)>0.1){
-        var lx=cx+Math.cos(mid)*(r+20), ly=cy+Math.sin(mid)*(r+20);
-        ctx.fillStyle='#8b949e'; ctx.font='11px sans-serif';
-        var pct=(d.v/total*100).toFixed(1)+'%';
-        ctx.fillText(d.l+' '+pct, lx-ctx.measureText(d.l+' '+pct).width/2, ly+4);
-      }
-    });
-    // Center
-    ctx.fillStyle='#e6edf3'; ctx.font='bold 14px sans-serif';
-    ctx.fillText('Total', cx-ctx.measureText('Total').width/2, cy-5);
-    ctx.font='11px sans-serif'; ctx.fillStyle='#8b949e';
-    ctx.fillText(C.format(total), cx-ctx.measureText(C.format(total)).width/2, cy+12);
-  },
-  radar: function(ctx, labels, datasets, w, h) {
-    var cx=w/2, cy=h/2, r=Math.min(w,h)/2-40;
-    var n=labels.length, step=Math.PI*2/n;
-    ctx.strokeStyle='#30363d'; ctx.lineWidth=1;
-    for(var ring=1;ring<=4;ring++){
+// ============ Pure Canvas Chart Library ============
+function initCanvas(id, type, data, opts) {
+  var canvas = document.getElementById(id);
+  if (!canvas) return;
+  var ctx = canvas.getContext('2d');
+  var w = canvas.parentElement.clientWidth || 340;
+  canvas.width = w;
+  canvas.height = opts.height || 220;
+  var h = canvas.height;
+  ctx.clearRect(0, 0, w, h);
+
+  var colors = {
+    red: '#f85149', green: '#3fb950', yellow: '#d29922',
+    blue: '#58a6ff', orange: '#ff6b35', purple: '#bc8cff',
+    bg3: '#21262d', txt2: '#8b949e', txt: '#e6edf3', bd: '#30363d'
+  };
+
+  // Draw grid
+  function grid(count, color) {
+    count = count || 4;
+    ctx.strokeStyle = color || colors.bg3;
+    ctx.lineWidth = 1;
+    for (var i = 1; i < count; i++) {
+      var y = h * i / count;
       ctx.beginPath();
-      for(var i=0;i<=n;i++){
-        var a=(i/n)*Math.PI*2-Math.PI/2, x=cx+Math.cos(a)*r*ring/4, y=cy+Math.sin(a)*r*ring/4;
-        i===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
-      } ctx.stroke();
+      ctx.moveTo(0, y);
+      ctx.lineTo(w, y);
+      ctx.stroke();
     }
-    for(var i=0;i<n;i++){
-      var a=(i/n)*Math.PI*2-Math.PI/2;
-      ctx.beginPath(); ctx.moveTo(cx,cy); ctx.lineTo(cx+Math.cos(a)*r,cy+Math.sin(a)*r); ctx.stroke();
-      ctx.fillStyle='#8b949e'; ctx.font='10px sans-serif';
-      ctx.fillText(labels[i], cx+Math.cos(a)*(r+15)-ctx.measureText(labels[i]).width/2, cy+Math.sin(a)*(r+15)+4);
+  }
+
+  // Format number
+  function fmt(n) {
+    if (n >= 1e12) return (n/1e12).toFixed(1)+'T';
+    if (n >= 1e11) return (n/1e11).toFixed(1)+'B';
+    if (n >= 1e8) return (n/1e8).toFixed(1)+'B';
+    if (n >= 1e4) return (n/1e4).toFixed(0)+'W';
+    return n.toString();
+  }
+
+  if (type === 'bar') {
+    var labels = data.labels || [];
+    var series = data.series || [];
+    var n = labels.length;
+    var nSeries = series.length;
+    var padLeft = 8, padRight = 8, padTop = 10, padBottom = 36;
+    var chartW = w - padLeft - padRight;
+    var chartH = h - padTop - padBottom;
+    var groupW = chartW / n;
+    var barW = (groupW * 0.7) / nSeries;
+    var chartColors = [colors.blue, colors.orange, colors.green, colors.yellow];
+
+    // Find max
+    var maxVal = 0;
+    series.forEach(function(s){ s.data.forEach(function(v){ if(v>maxVal) maxVal=v; }); });
+
+    grid(4);
+    ctx.strokeStyle = colors.bg3; ctx.lineWidth = 1;
+    for (var i = 0; i < n; i++) {
+      var cx = padLeft + i * groupW + groupW / 2;
+      series.forEach(function(s, si) {
+        var barH = (s.data[i] / maxVal) * chartH;
+        var bx = cx - (groupW * 0.7) / 2 + si * barW + barW * 0.05;
+        var by = padTop + chartH - barH;
+        ctx.fillStyle = chartColors[si % chartColors.length];
+        ctx.fillRect(bx, by, barW * 0.9, barH);
+        // value label
+        if (barH > 14) {
+          ctx.fillStyle = '#fff';
+          ctx.font = '10px sans-serif';
+          ctx.textAlign = 'center';
+          ctx.fillText(fmt(s.data[i]), bx + barW * 0.45, by + 12);
+        }
+      });
+      // x label
+      ctx.fillStyle = colors.txt2;
+      ctx.font = '10px sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText(labels[i], cx, h - 8);
     }
-    datasets.forEach(function(ds,di){
-      ctx.strokeStyle=ds.color||C.colors[di]; ctx.lineWidth=2; ctx.fillStyle=(ds.color||C.colors[di])+'33';
+
+  } else if (type === 'line') {
+    var labels = data.labels || [];
+    var series = data.series || [];
+    var nSeries = series.length;
+    var padLeft = 8, padRight = 8, padTop = 10, padBottom = 36;
+    var chartW = w - padLeft - padRight;
+    var chartH = h - padTop - padBottom;
+
+    var maxVal = 0, minVal = Infinity;
+    series.forEach(function(s){ s.data.forEach(function(v){ if(v>maxVal) maxVal=v; if(v<minVal) minVal=v; }); });
+    var range = maxVal - minVal || 1;
+
+    var lineColors = [colors.orange, colors.green, colors.blue, colors.yellow, colors.purple];
+
+    grid(4);
+    series.forEach(function(s, si) {
       ctx.beginPath();
-      ds.data.forEach(function(v,i){
-        var a=(i/n)*Math.PI*2-Math.PI/2, x=cx+Math.cos(a)*r*v, y=cy+Math.sin(a)*r*v;
-        i===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
+      s.data.forEach(function(v, i) {
+        var x = padLeft + (i / (s.data.length - 1)) * chartW;
+        var y = padTop + chartH - ((v - minVal) / range) * chartH;
+        if (i === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
       });
-      ctx.closePath(); ctx.fill(); ctx.stroke();
-    });
-  },
-  gauge: function(ctx, value, min, max, label, w, h) {
-    var cx=w/2, cy=h-20, r=w/2-30;
-    var sa=Math.PI, ea=0;
-    ctx.strokeStyle='#21262d'; ctx.lineWidth=15;
-    ctx.beginPath(); ctx.arc(cx,cy,r,sa,sa+Math.PI); ctx.stroke();
-    var pct=(value-min)/(max-min);
-    var c=pct>0.7?'#3fb950':pct>0.4?'#d29922':'#f85149';
-    ctx.strokeStyle=c; ctx.lineWidth=15;
-    ctx.beginPath(); ctx.arc(cx,cy,r,sa,sa+Math.PI*pct); ctx.stroke();
-    ctx.fillStyle='#e6edf3'; ctx.font='bold 24px sans-serif';
-    ctx.fillText(value.toFixed(1), cx-ctx.measureText(value.toFixed(1)).width/2, cy-10);
-    ctx.font='10px sans-serif'; ctx.fillStyle='#8b949e';
-    ctx.fillText(label, cx-ctx.measureText(label).width/2, cy+12);
-  },
-  scatter: function(ctx, data, w, h) {
-    var xs=data.map(d=>d.x), ys=data.map(d=>d.y);
-    var xMax=Math.max(...xs), xMin=Math.min(...xs);
-    var yMax=Math.max(...ys), yMin=Math.min(...ys);
-    var xR=xMax-xMin||1, yR=yMax-yMin||1;
-    var gx=50,gy=10,gh=h-30,gw=w-60;
-    ctx.strokeStyle='#30363d'; ctx.lineWidth=1;
-    ctx.beginPath(); ctx.moveTo(gx,gy); ctx.lineTo(gx,h-20); ctx.lineTo(w-10,h-20); ctx.stroke();
-    for(var i=0;i<=4;i++){
-      var y=h-20-(i/4)*gh, v=yMin+(i/4)*yR;
-      ctx.fillStyle='#484f58'; ctx.font='10px sans-serif';
-      ctx.fillText(v.toFixed(1),2,y+4);
-    }
-    data.forEach(function(d,i){
-      var px=gx+((d.x-xMin)/xR)*gw, py=h-20-((d.y-yMin)/yR)*gh;
-      ctx.fillStyle=d.c||C.colors[i%C.colors.length];
-      ctx.beginPath(); ctx.arc(px,py,6,0,Math.PI*2); ctx.fill();
-      ctx.fillStyle='#e6edf3'; ctx.font='9px sans-serif';
-      ctx.fillText(d.l, px+8, py+4);
-    });
-  },
-  barGrouped: function(ctx, groups, keys, w, h) {
-    var allVals = groups.flatMap(g=>keys.map(k=>g[k]||0));
-    var max = Math.max(...allVals), min = Math.min(0,...allVals);
-    var range = max - min || 1;
-    var gx=45, gy=10, gh=h-30, gw=w-55;
-    var groupW = gw/groups.length;
-    var barW = (groupW-20)/keys.length;
-    ctx.strokeStyle='#30363d'; ctx.lineWidth=1;
-    ctx.beginPath(); ctx.moveTo(gx,gy); ctx.lineTo(gx,h-20); ctx.lineTo(w-10,h-20); ctx.stroke();
-    for(var i=0;i<=4;i++){
-      var y=h-20-(i/4)*gh, v=min+(i/4)*range;
-      ctx.fillStyle='#484f58'; ctx.font='10px sans-serif';
-      ctx.fillText(C.format(v),2,y+4);
-    }
-    groups.forEach(function(g,i){
-      var bx=gx+i*groupW+10;
-      keys.forEach(function(k,ki){
-        var v=g[k]||0;
-        var bh=((v-min)/range)*gh;
-        ctx.fillStyle=C.colors[ki%C.colors.length];
-        ctx.fillRect(bx+ki*barW, h-20-bh, barW-3, bh);
+      ctx.strokeStyle = lineColors[si % lineColors.length];
+      ctx.lineWidth = 2;
+      ctx.stroke();
+
+      // Dots and labels
+      s.data.forEach(function(v, i) {
+        var x = padLeft + (i / (s.data.length - 1)) * chartW;
+        var y = padTop + chartH - ((v - minVal) / range) * chartH;
+        ctx.beginPath();
+        ctx.arc(x, y, 3, 0, Math.PI*2);
+        ctx.fillStyle = lineColors[si % lineColors.length];
+        ctx.fill();
+        if (si === 0 && s.data.length <= 8) {
+          ctx.fillStyle = '#fff';
+          ctx.font = '9px sans-serif';
+          ctx.textAlign = 'center';
+          ctx.fillText(fmt(v), x, y - 6);
+        }
       });
-      ctx.fillStyle='#8b949e'; ctx.font='9px sans-serif';
-      ctx.fillText(g.l||'', bx+groupW/2-ctx.measureText(g.l||'').width/2, h-4);
+
+      // Legend
+      ctx.fillStyle = lineColors[si % lineColors.length];
+      ctx.fillRect(w - 90, padTop + si * 16, 8, 8);
+      ctx.fillStyle = colors.txt2;
+      ctx.font = '10px sans-serif';
+      ctx.textAlign = 'left';
+      ctx.fillText(s.name, w - 78, padTop + si * 16 + 8);
     });
+
+    // X labels
+    labels.forEach(function(l, i) {
+      var x = padLeft + (i / (labels.length - 1)) * chartW;
+      ctx.fillStyle = colors.txt2;
+      ctx.font = '10px sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText(l, x, h - 8);
+    });
+
+  } else if (type === 'pie') {
+    var items = data.items || [];
+    var total = items.reduce(function(s, i){ return s + i.value; }, 0);
+    var cx = w / 2, cy = h / 2 + 10;
+    var radius = Math.min(w, h) / 2 - 20;
+    var pieColors = [colors.orange, colors.blue, colors.green, colors.yellow, colors.purple, colors.red];
+
+    var startAngle = -Math.PI / 2;
+    items.forEach(function(item, i) {
+      var angle = (item.value / total) * Math.PI * 2;
+      ctx.beginPath();
+      ctx.moveTo(cx, cy);
+      ctx.arc(cx, cy, radius, startAngle, startAngle + angle);
+      ctx.closePath();
+      ctx.fillStyle = pieColors[i % pieColors.length];
+      ctx.fill();
+
+      // Label
+      var midAngle = startAngle + angle / 2;
+      var labelR = radius * 1.4;
+      var lx = cx + Math.cos(midAngle) * labelR;
+      var ly = cy + Math.sin(midAngle) * labelR;
+      ctx.fillStyle = '#fff';
+      ctx.font = 'bold 11px sans-serif';
+      ctx.textAlign = 'l';
+      var pct = ((item.value/total)*100).toFixed(1)+'%';
+      ctx.fillText(item.name + ' ' + pct, lx, ly + 4);
+
+      startAngle += angle;
+    });
+
+  } else if (type === 'stacked-bar') {
+    var labels = data.labels || [];
+    var series = data.series || [];
+    var n = labels.length;
+    var colors_arr = [colors.blue, colors.orange, colors.green, colors.yellow, colors.purple];
+    var padLeft = 8, padRight = 8, padTop = 10, padBottom = 36;
+    var chartW = w - padLeft - padRight;
+    var maxTotal = 0;
+    for (var i = 0; i < n; i++) {
+      var total = series.reduce(function(s, ser) { return s + (ser.data[i]||0); }, 0);
+      if (total > maxTotal) maxTotal = total;
+    }
+    var chartH = h - padTop - padBottom;
+    var groupW = chartW / n;
+
+    series.forEach(function(ser, si) {
+      ser.data.forEach(function(v, i) {
+        if (!v) return;
+        var stackH = series.slice(0, si).reduce(function(s, prev) { return s + (prev.data[i]||0); }, 0);
+        var barH = (v / maxTotal) * chartH;
+        var stackBarH = (stackH / maxTotal) * chartH;
+        var bx = padLeft + i * groupW + 4;
+        var by = padTop + chartH - barH - stackBarH;
+        ctx.fillStyle = colors_arr[si % colors_arr.length];
+        ctx.fillRect(bx, by, groupW - 8, barH);
+      });
+    });
+
+    labels.forEach(function(l, i) {
+      var x = padLeft + i * groupW + groupW / 2;
+      ctx.fillStyle = colors.txt2;
+      ctx.font = '10px sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText(l, x, h - 8);
+    });
+
     // Legend
-    var lx=gx+10, ly=h+2;
-    keys.forEach(function(k,ki){
-      ctx.fillStyle=C.colors[ki%C.colors.length];
-      ctx.fillRect(lx,ly-8,12,12);
-      ctx.fillStyle='#8b949e'; ctx.font='10px sans-serif';
-      ctx.fillText(k, lx+16, ly+4);
-      lx += 80;
+    series.forEach(function(ser, si) {
+      ctx.fillStyle = colors_arr[si % colors_arr.length];
+      ctx.fillRect(w - 90, padTop + si * 14, 8, 8);
+      ctx.fillStyle = colors.txt2;
+      ctx.font = '10px sans-serif';
+      ctx.textAlign = 'left';
+      ctx.fillText(ser.name, w - 78, padTop + si * 14 + 8);
     });
   }
-};
-window.C = C;
+}
 
+// ============ Draw All Charts ============
+function drawCharts() {
 
-// Chart init from data attributes
+  // Tencent: 分部收入饼图
+  initCanvas('chart-tencent-seg', 'pie', {
+    items: [
+      {name: '金融科技/云', value: 2294},
+      {name: '游戏合计', value: 2416},
+      {name: '社交网络', value: 1277},
+      {name: '广告', value: 1450}
+    ]
+  }, {height:260});
+
+  // Tencent: 季度营收
+  initCanvas('chart-tencent-quarter', 'bar', {
+    labels: ['Q1\'24','Q2\'24','Q3\'24','Q4\'24','Q1\'25','Q2\'25','Q3\'25','Q4\'25'],
+    series: [
+      {name: '营收(亿¥)', data: [1595,1672,1677,1674,1800,1906,1970,1944]},
+      {name: '净利(亿¥)', data: [502,584,598,564,595,647,679,647]}
+    ]
+  }, {height:260});
+
+  // Tencent: 利润率趋势
+  initCanvas('chart-tencent-margins', 'line', {
+    labels: ['FY23','FY24','FY25'],
+    series: [
+      {name: '毛利率', data: [52,54,56]},
+      {name: '净利率', data: [19,25,34.5]}
+    ]
+  }, {height:260});
+
+  // Tencent: ROE对比
+  initCanvas('chart-tencent-roe', 'bar', {
+    labels: ['腾讯', '阿里', '美团', '网易', '京东', '快手', '行业均'],
+    series: [
+      {name: 'ROE %', data: [30, 15, 22, 18, 12, 20, 17]}
+    ]
+  }, {height:260});
+
+  // Alibaba: 分部饼图
+  initCanvas('chart-alibaba-seg', 'pie', {
+    items: [
+      {name: '淘天', value: 5000},
+      {name: '国际', value: 1700},
+      {name: '本地生活', value: 650},
+      {name: '云智能', value: 1100},
+      {name: '其他', value: 1513}
+    ]
+  }, {height:260});
+
+  // Alibaba: 年度营收/净利
+  initCanvas('chart-alibaba-annual', 'bar', {
+    labels: ['FY21','FY22','FY23','FY24','FY25'],
+    series: [
+      {name: '营收(亿¥)', data: [7172,8530,8687,9411,9963]},
+      {name: '净利(亿¥)', data: [1503,470,728,800,1295]}
+    ]
+  }, {height:260});
+
+  // Alibaba: 毛利率/净利率
+  initCanvas('chart-alibaba-margins', 'line', {
+    labels: ['FY21','FY22','FY23','FY24','FY25'],
+    series: [
+      {name: '毛利率', data: [42,41,39,38,38]},
+      {name: '净利率', data: [21,5.5,8.4,8.5,13]}
+    ]
+  }, {height:260});
+
+  // Alibaba: ROE
+  initCanvas('chart-alibaba-roe', 'bar', {
+    labels: ['FY21','FY22','FY23','FY24','FY25'],
+    series: [
+      {name: 'ROE %', data: [26,8,12,11,15]}
+    ]
+  }, {height:260});
+
+  // NVDA: 分部饼图
+  initCanvas('chart-nvda-seg', 'pie', {
+    items: [
+      {name: '数据中心', value: 393},
+      {name: '游戏', value: 37},
+      {name: '专业可视化', value: 48},
+      {name: '汽车', value: 57}
+    ]
+  }, {height:260});
+
+  // NVDA: 8季度
+  initCanvas('chart-nvda-quarter', 'bar', {
+    labels: ['Q1\'25','Q2\'25','Q3\'25','Q4\'25','Q1\'26','Q2\'26','Q3\'26','Q4\'26'],
+    series: [
+      {name: '营收($B)', data: [26,30,35,39,44,51,61,68]},
+      {name: '净利($B)', data: [15,17,21,24,28,32,40,43]}
+    ]
+  }, {height:260});
+
+  // NVDA: 利润率
+  initCanvas('chart-nvda-margins', 'line', {
+    labels: ['Q1\'25','Q2\'25','Q3\'25','Q4\'25','Q1\'26','Q2\'26','Q3\'26','Q4\'26'],
+    series: [
+      {name: '毛利率', data: [66,68,71,73,73,74,75,75]},
+      {name: '净利率', data: [58,57,60,62,63,63,66,63]}
+    ]
+  }, {height:260});
+
+  // NVDA: ROE
+  initCanvas('chart-nvda-roe', 'bar', {
+    labels: ['FY22','FY23','FY24','FY25','FY26'],
+    series: [
+      {name: 'ROE %', data: [24,19,17,77,101]}
+    ]
+  }, {height:260});
+
+  // NVDA: 评级分布
+  initCanvas('chart-nvda-rating', 'pie', {
+    items: [
+      {name: '买入', value: 52},
+      {name: '增持', value: 7},
+      {name: '中性', value: 3}
+    ]
+  }, {height:260});
+
+  // NVDA: DCF
+  initCanvas('chart-nvda-dcf', 'bar', {
+    labels: ['悲观 $150', '基准 $250', '乐观 $320', '当前 $199'],
+    series: [
+      {name: '价格区间', data: [150, 250, 320, 199]}
+    ]
+  }, {height:260});
+
+  // Portfolio: 持仓饼图
+  initCanvas('chart-portfolio-pie', 'pie', {
+    items: [
+      {name: '腾讯 40%', value: 40},
+      {name: '英伟达 35%', value: 35},
+      {name: '阿里 25%', value: 25}
+    ]
+  }, {height:300});
+}
+
 document.addEventListener('DOMContentLoaded', function() {
-  var canvases = document.querySelectorAll('canvas[data-type]');
-  canvases.forEach(function(canvas) {
-    var ctx = canvas.getContext('2d');
-    var w = canvas.offsetWidth || 440;
-    var h = parseInt(canvas.dataset.height) || 280;
-    canvas.width = w; canvas.height = h;
-    var t = canvas.dataset.type;
-
-    if (t === 'bar') {
-      try {
-        var raw = canvas.dataset.data.replace(/\'/g, '"');
-        var data = JSON.parse(raw);
-        C.bar(ctx, data, w, h);
-      } catch(e) { ctx.fillStyle='#484f58'; ctx.fillText('chart error',10,20);}
-    }
-    else if (t === 'line') {
-      try {
-        var raw = canvas.dataset.datasets.replace(/\'/g, '"');
-        var ds = JSON.parse(raw);
-        C.line(ctx, ds, w, h);
-      } catch(e) { ctx.fillStyle='#484f58'; ctx.fillText('chart error',10,20);}
-    }
-    else if (t === 'pie') {
-      try {
-        var raw = canvas.dataset.data.replace(/\'/g, '"');
-        var data = JSON.parse(raw);
-        C.pie(ctx, data, w, h);
-      } catch(e) { ctx.fillStyle='#484f58'; ctx.fillText('chart error',10,20);}
-    }
-    else if (t === 'radar') {
-      try {
-        var labels = canvas.dataset.labels.split('|');
-        var raw = canvas.dataset.datasets.replace(/\'/g, '"');
-        var ds = JSON.parse(raw);
-        C.radar(ctx, labels, ds, w, h);
-      } catch(e) { ctx.fillStyle='#484f58'; ctx.fillText('chart error',10,20);}
-    }
-    else if (t === 'gauge') {
-      var v = parseFloat(canvas.dataset.value);
-      var mn = parseFloat(canvas.dataset.min);
-      var mx = parseFloat(canvas.dataset.max);
-      var lbl = canvas.dataset.label;
-      C.gauge(ctx, v, mn, mx, lbl, w, h);
-    }
-    else if (t === 'barh') {
-      try {
-        var raw = canvas.dataset.data.replace(/\'/g, '"');
-        var data = JSON.parse(raw);
-        var sorted = data.slice().sort(function(a,b){return b.v-a.v});
-        var max = sorted[0].v;
-        var bh = 28, gap = 6;
-        var gx = 120, gy = 10, gw = w - 130, gh = sorted.length * (bh+gap);
-        canvas.height = Math.max(h, gh + 30);
-        ctx.strokeStyle='#30363d'; ctx.lineWidth=1;
-        ctx.beginPath(); ctx.moveTo(gx, gy); ctx.lineTo(gx, gy+gh); ctx.stroke();
-        for(var i=0;i<sorted.length;i++){
-          var y = gy+i*(bh+gap);
-          ctx.fillStyle='#484f58'; ctx.font='11px sans-serif';
-          ctx.fillText(sorted[i].l, 2, y+bh/2+4);
-          var bw = (sorted[i].v/max)*gw;
-          var c = sorted[i].l.includes('当前') ? '#58a6ff' : '#ff6b35';
-          ctx.fillStyle=c; ctx.fillRect(gx, y, bw, bh);
-          ctx.fillStyle='#8b949e'; ctx.font='11px sans-serif';
-          ctx.fillText('¥'+sorted[i].v, gx+bw+6, y+bh/2+4);
-        }
-      } catch(e) { ctx.fillStyle='#484f58'; ctx.fillText('chart error',10,20);}
-    }
-    else if (t === 'barGrouped') {
-      try {
-        var raw = canvas.dataset.keys.replace(/\'/g, '"');
-        var keys = JSON.parse(raw);
-        var raw2 = canvas.dataset.groups.replace(/\'/g, '"');
-        var groups = JSON.parse(raw2);
-        C.barGrouped(ctx, groups, keys, w, h);
-      } catch(e) { ctx.fillStyle='#484f58'; ctx.fillText('chart error',10,20);}
-    }
-  });
-
-  // Active nav
-  var sections = document.querySelectorAll('section[id]');
-  var navLinks = document.querySelectorAll('.nav a');
-  window.addEventListener('scroll', function() {
-    var scroll = window.scrollY + 100;
-    sections.forEach(function(sec) {
-      if (scroll >= sec.offsetTop) {
-        navLinks.forEach(function(a){a.classList.remove('active');});
-        document.querySelector('.nav a[href="#'+sec.id+'"]').classList.add('active');
-      }
-    });
-  });
+  setTimeout(drawCharts, 80);
 });
 </script>
 </body>
